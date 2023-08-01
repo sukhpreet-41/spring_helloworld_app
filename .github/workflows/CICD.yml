@@ -27,6 +27,9 @@ jobs:
         # building artifact with maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+      
+    - name: Building snapshot
+      run: mvn clean install
 
 # sonarqube analysis 
     - name: Build and analyze
@@ -41,6 +44,13 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+        
+    - name: Build and push
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: true
+        tags: sukhpreet2002/springapp_git:latest
       
 #     - name: install datree 
 #       run: curl https://get.datree.io | /bin/bash
