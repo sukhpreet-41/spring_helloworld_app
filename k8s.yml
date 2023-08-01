@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp
+  name: myspringapp
 spec:
   selector:
     matchLabels:
-      app: myapp
+      app: myspringapp
   template:
     metadata:
       labels:
-        app: myapp
+        app: myspringapp
     spec:
       containers:
-      - name: myapp
-        image: <Image>
+      - name: spring-app
+        image: springapp_git
         ports:
-        - containerPort: <Port>
+        - containerPort: 5000
