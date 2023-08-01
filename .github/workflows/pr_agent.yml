@@ -7,6 +7,8 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+env:
+  DATREE_TOKEN: ${{ secrets.DATREE_TOKEN }}
 
 jobs:
   build:
@@ -57,6 +59,10 @@ jobs:
     - name: install datree 
       run: curl https://get.datree.io | /bin/bash
       
-    - name: run datree tests
-      run: datree test k8s.yml
+        
+    - name: Run Datree Policy Check
+      uses: datreeio/action-datree@main
+      with:
+        path: '*.yaml'
+        cliArguments: '--only-k8s-files'
       
