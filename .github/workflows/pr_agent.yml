@@ -1,14 +1,62 @@
+
+
+name: Java CI with Maven
+
 on:
+  push:
+    branches: [ "main" ]
   pull_request:
-  issue_comment:
+    branches: [ "main" ]
+
 jobs:
-  pr_agent_job:
+  build:
+
     runs-on: ubuntu-latest
-    name: Run pr agent on every pull request, respond to user comments
+
+    # installing java and maven
     steps:
-      - name: PR Agent action step
-        id: pragent
-        uses: Codium-ai/pr-agent@main
-        env:
-          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+        # building artifact with maven
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+
+
+#     - name: Publish package
+#       run: mvn --batch-mode deploy
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.REOP_SECRET }}
+      
+#     - name: Cache SonarQube packages
+#       uses: actions/cache@v1
+#       with:
+#         path: ~/.sonar/cache
+#         key: ${{ runner.os }}-sonar
+#         restore-keys: ${{ runner.os }}-sonar
+#     - name: Cache Maven packages
+#       uses: actions/cache@v1
+#       with:
+#         path: ~/.m2
+#         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+#         restore-keys: ${{ runner.os }}-m2
+
+
+# sonarqube analysis 
+#     - name: Build and analyze
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.REOP_SECRET }}  # Needed to get PR information, if any
+#         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#         SONAR_HOST_URL: ${{ secrets.SONAR_URL }}
+#       run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+      
+    - name: install datree 
+      run: curl https://get.datree.io | /bin/bash
+      
+    - name: run datree tests
+      run: datree test k8s.yml
+      
