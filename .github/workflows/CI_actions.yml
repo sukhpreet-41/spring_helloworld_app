@@ -49,20 +49,20 @@ jobs:
 
 
 # sonarqube analysis 
-#     - name: Build and analyze
-#       env:
-#         GITHUB_TOKEN: ${{ secrets.REOP_SECRET }}  # Needed to get PR information, if any
-#         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#         SONAR_HOST_URL: ${{ secrets.SONAR_URL }}
-#       run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+    - name: Build and analyze
+      env:
+        GITHUB_TOKEN: ${{ secrets.REOP_SECRET }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_URL }}
+      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
       
 #     - name: install datree 
 #       run: curl https://get.datree.io | /bin/bash
       
         
-    - name: Run Datree Policy Check
-      uses: datreeio/action-datree@main
-      with:
-        path: '**/*.yml'
-        cliArguments: '--only-k8s-files'
+#     - name: Run Datree Policy Check
+#       uses: datreeio/action-datree@main
+#       with:
+#         path: '**/*.yml'
+#         cliArguments: '--only-k8s-files'
       
