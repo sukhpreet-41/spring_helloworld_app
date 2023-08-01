@@ -56,13 +56,13 @@ jobs:
 #         SONAR_HOST_URL: ${{ secrets.SONAR_URL }}
 #       run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
       
-    - name: install datree 
-      run: curl https://get.datree.io | /bin/bash
+#     - name: install datree 
+#       run: curl https://get.datree.io | /bin/bash
       
         
     - name: Run Datree Policy Check
       uses: datreeio/action-datree@main
       with:
-        path: 'k8s.yaml'
+        path: '**/*.yml'
         cliArguments: '--only-k8s-files'
       
