@@ -27,6 +27,9 @@ jobs:
         # building artifact with maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+      
+    - name: Building snapshot
+      run: mvn clean install
 
 
 #     - name: Publish package
@@ -53,7 +56,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.REOP_SECRET }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_URL }}
+        SONAR_HOST_URL: http://44.203.250.141:9000 #${{ secrets.SONAR_URL }}
       run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
       
 #     - name: install datree 
@@ -65,4 +68,20 @@ jobs:
 #       with:
 #         path: '**/*.yml'
 #         cliArguments: '--only-k8s-files'
-      
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build and push
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: true
+        tags: sukhpreet2002/springapp_git:latest
