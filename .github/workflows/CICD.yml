@@ -36,7 +36,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.REOP_SECRET }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: http://54.166.183.14:9000 #${{ secrets.SONAR_URL }}
+        SONAR_HOST_URL: http://44.203.250.141:9000 #${{ secrets.SONAR_URL }}
       run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
       
       
